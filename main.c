@@ -33,11 +33,11 @@ int getFreeSpace(ePersona Per[],int cant ) {
 
 
 isRepeated(ePersona Per[],int buffer,int cant){
-    int retorno=0,i;
+    int retorno=-1,i;
     for(i=0;i<cant;i++) {
             if(Per[i].legajo==buffer) {
                 printf("Legajo repetido.");
-                retorno=1;
+                retorno=i;
             }
 
     }
@@ -62,13 +62,15 @@ int alta(ePersona Per[],int cant){
             Per[i].isEmpty=0;
 
             printf("Ingrese el nombre: \n");
+            fflush(stdin);
             gets(&Per[i].nombre);
+            fflush(stdin);
             getEntero(&buffer,"Ingrese un legajo","Legajo invalido",0,2147483647,2);
 
-            if(!isRepeated(Per,buffer,CANT)){
+            if(isRepeated(Per,buffer,cant)!=-1){
                     Per[i].legajo=buffer;
 
-            };
+            }
 
             getFloat(&Per[i].salario,"Ingrese salario","Salario invalido",0,2147483647,2);
 
@@ -85,6 +87,8 @@ int main()
     ePersona Per[CANT];
     init(Per, CANT);
     alta(Per, CANT);
+    //alta(Per, CANT);
+    //alta(Per, CANT);
     printf("\nEl primer legajo es:\n   Nombre:%s\n   Legajo:%d\n   Salario:%f",Per[0].nombre,Per[0].legajo,Per[0].salario);
     printf("EL TAMAÑO DEL ARRAY ES : %d", sizeof(Per)/sizeof(Per[0]));
     return 0;
