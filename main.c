@@ -1,95 +1,114 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #define CANT 5
-#include ".\\functions-in-C\\functionsBiblo\\functionsForProjects.h"
+#define ID 0
+#define EXIT 5
 
-typedef struct {
-    int legajo;
-    char nombre[50];
-    float salario;
-    int isEmpty;
-
-}ePersona;
+#include "functionsForProjects.h"
 
 
-int getFreeSpace(ePersona[],int);
-int init(ePersona[], int);
-int alta(ePersona[], int);
-int isRepeated(ePersona[], int,int);
+int main() {
+    int flag = 0, id = 0, sector;
+    float salary;
+    int menu;
+    char name[20];//BORERAR TODO
+    char lastname[20];//BORERAR TODO
+    eEmployee employee[CANT];
 
+    do {
 
-int getFreeSpace(ePersona Per[],int cant ) {
-
-    int i;
-    for (i=0;i<cant;i++){
-            printf("ENTRO \n");
-        if(Per[i].isEmpty==1){
-            return i;
+        printf("--------------------------- Menu ---------------------------\n");
+        printf("|1- ALTA de empleado                                       |\n");
+        printf("|                                                          |\n");
+        printf("|2- MODIFICAR empleado                                     |\n");
+        printf("|                                                          |\n");
+        printf("|3- BAJA de empleado                                       |\n");
+        printf("|                                                          |\n");
+        printf("|4- INFORMAR empleado/s                                    |\n");
+        printf("|                                                          |\n");
+        printf("|5- SALIR                                                  |\n");
+        printf("------------------------------------------------------------\n");
+        fflush(stdin);
+        scanf("%d", &menu);
+        if (!isValidMenu(menu)) {
+            printf("El numero ingresado no es valido.\n");
+            menu = 0;
         }
-    }
-    return -1;
 
-}
-
-
-isRepeated(ePersona Per[],int buffer,int cant){
-    int retorno=-1,i;
-    for(i=0;i<cant;i++) {
-            if(Per[i].legajo==buffer) {
-                printf("Legajo repetido.");
-                retorno=i;
+        if (menu == 1) {
+            if (flag == 0) {
+                if (initEmployees(employee, CANT) != -1) {
+                    printf("No hay espacio libre.\n");
+                } else {
+                    flag = 1;
+                }
             }
-
-    }
-    //TODO terminar
-    return retorno;
-}
-int init(ePersona Per[], int cant){
-    int i;
-    for (i=0;i<cant;i++){
-        Per[i].isEmpty=1;
-    }
-    return 0;
-
-}
-int alta(ePersona Per[],int cant){
-
-    //TODO seguir
-    int i,buffer;
-    //getFreeSpace(Per)
-    i=getFreeSpace(Per,cant);
-        if(i!=-1){
-            Per[i].isEmpty=0;
-
-            printf("Ingrese el nombre: \n");
-            fflush(stdin);
-            gets(&Per[i].nombre);
-            fflush(stdin);
-            getEntero(&buffer,"Ingrese un legajo","Legajo invalido",0,2147483647,2);
-
-            if(isRepeated(Per,buffer,cant)!=-1){
-                    Per[i].legajo=buffer;
-
-            }
-
-            getFloat(&Per[i].salario,"Ingrese salario","Salario invalido",0,2147483647,2);
-
-            return 0;
-
+            //TODO esta todo medio hardcordeado.
+            if (getFreeSpace(employee, CANT) != -1)
+                id++;
+            printf("------------------------------------------------------------\n");
+            getString(name,"|               Ingrese el nombre:                         |\n");
+            printf("------------------------------------------------------------\n");
+            system("cls");
+            printf("------------------------------------------------------------\n");
+getString(lastname,"|               Ingrese el apellido:                      |\n");
+            printf("------------------------------------------------------------\n");
+            system("cls");
+            printf("------------------------------------------------------------\n");
+            getEntero(&sector, "|               Ingrese el sector:                        |\n","ERROR: Solo numeros\n",0,300,0);
+            printf("------------------------------------------------------------\n");
+            system("cls");
+            printf("------------------------------------------------------------\n");
+            getFloat(&salary, "|               Ingrese el salario:                       |\n","ERROR: Solo numeros\n",0,450000.0,0);
+            printf("------------------------------------------------------------\n");
+            system("cls");
+            addEmployee(employee, CANT, id, name,lastname, salary, sector);
 
         }
 
-    return -1;
+        if (menu == 2) {
+            if (isInit(flag)) {
+
+            } else {
+
+            }
+
+        }
+        if (menu == 3) {
+            if (isInit(flag)) {
+
+
+            }
+
+        }
+
+        if (menu == 4) {
+            if (isInit(flag)) {
+                printf("\nEl primer legajo es:\n   Nombre:%s\n   Apellido:%s\n   Salario:%f\n   Sector:%d\n", employee[0].id,
+                       employee[0].name, employee[0].lastName,employee[0].salary, employee[0].sector);
+
+            }
+
+
+        }
+    } while (menu != EXIT);
+    return 0;
+//    eEmployee Per[CANT];
+//    initEmployees(Per, CANT);
+//    alta(Per, CANT);
+//    //alta(Per, CANT);
+//    //alta(Per, CANT);
+//    printf("\nEl primer legajo es:\n   Nombre:%s\n   Legajo:%d\n   Salario:%f",Per[0].nombre,Per[0].legajo,Per[0].salario);
+//    printf("EL TAMAï¿½O DEL ARRAY ES : %d", sizeof(Per)/sizeof(Per[0]));
+//    alta(Per, CANT);
+//    //alta(Per, CANT);
+//    //alta(Per, CANT);
+//    printf("-----------------------------------------------------------------------------------------------------------");
+//    printf("\nEl primer legajo es:\n   Nombre:%s\n   Legajo:%d\n   Salario:%f",Per[0].nombre,Per[0].legajo,Per[0].salario);
+//    printf("EL TAMAï¿½O DEL ARRAY ES : %d", sizeof(Per)/sizeof(Per[0]));
+//    getchar();
 
 }
-int main()
-{
-    ePersona Per[CANT];
-    init(Per, CANT);
-    alta(Per, CANT);
-    //alta(Per, CANT);
-    //alta(Per, CANT);
-    printf("\nEl primer legajo es:\n   Nombre:%s\n   Legajo:%d\n   Salario:%f",Per[0].nombre,Per[0].legajo,Per[0].salario);
-    printf("EL TAMAÑO DEL ARRAY ES : %d", sizeof(Per)/sizeof(Per[0]));
-    return 0;
-}
+
+
