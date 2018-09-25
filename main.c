@@ -1,23 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define CANT 5
-#define ID 0
+#define SIZE 5
 #define EXIT 5
+#define CHARSIZE 50
 
 #include "functionsForProjects.h"
-
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 int main() {
-    int flag = 0, id = 0, sector;
+    int flag = 0, id = 0, sector, menu, order;
     float salary;
-    int menu;
-    char name[20];//BORERAR TODO
-    char lastname[20];//BORERAR TODO
-    eEmployee employee[CANT];
+    char name[CHARSIZE];
+    char lastname[CHARSIZE];
+    eEmployee employee[SIZE];
 
     do {
-
         printf("--------------------------- Menu ---------------------------\n");
         printf("|1- ALTA de empleado                                       |\n");
         printf("|                                                          |\n");
@@ -38,42 +39,34 @@ int main() {
 
         if (menu == 1) {
             if (flag == 0) {
-                if (initEmployees(employee, CANT) != -1) {
+                if (initEmployees(employee, SIZE) != -1) {
                     printf("No hay espacio libre.\n");
                 } else {
                     flag = 1;
                 }
             }
-            //TODO esta todo medio hardcordeado.
-            if (getFreeSpace(employee, CANT) != -1)
+            
+            if (getFreeSpace(employee, SIZE) != -1)
                 id++;
             printf("------------------------------------------------------------\n");
-            getString(name,"|               Ingrese el nombre:                         |\n");
+            getStringLettersOnly(name, "Ingrese el nombre:\n", CHARSIZE, 3);
             printf("------------------------------------------------------------\n");
-            system("cls");
+            getStringLettersOnly(lastname, "Ingrese el apellido:\n", CHARSIZE, 3);
+
             printf("------------------------------------------------------------\n");
-getString(lastname,"|               Ingrese el apellido:                      |\n");
+            getEntero(&sector, "Ingrese el sector:\n", "ERROR: Solo numeros entre 0 y 300\n",
+                      0, 300, 3);
             printf("------------------------------------------------------------\n");
-            system("cls");
-            printf("------------------------------------------------------------\n");
-            getEntero(&sector, "|               Ingrese el sector:                        |\n","ERROR: Solo numeros\n",0,300,0);
-            printf("------------------------------------------------------------\n");
-            system("cls");
-            printf("------------------------------------------------------------\n");
-            getFloat(&salary, "|               Ingrese el salario:                       |\n","ERROR: Solo numeros\n",0,450000.0,0);
-            printf("------------------------------------------------------------\n");
-            system("cls");
-            addEmployee(employee, CANT, id, name,lastname, salary, sector);
+            getFloat(&salary, "Ingrese el salario:\n", "ERROR: Un salario no puede ser negativo.\n",
+                     0, pow(2,1024), 3);
+            addEmployee(employee, SIZE, id, name, lastname, salary, sector);
 
         }
 
         if (menu == 2) {
             if (isInit(flag)) {
 
-            } else {
-
             }
-
         }
         if (menu == 3) {
             if (isInit(flag)) {
@@ -85,8 +78,18 @@ getString(lastname,"|               Ingrese el apellido:                      |\
 
         if (menu == 4) {
             if (isInit(flag)) {
-                printf("\nEl primer legajo es:\n   Nombre:%s\n   Apellido:%s\n   Salario:%f\n   Sector:%d\n", employee[0].id,
-                       employee[0].name, employee[0].lastName,employee[0].salary, employee[0].sector);
+
+
+                fflush(stdin);
+                system("cls");
+                int returnNum = getEntero(&order, "Ingrese el orden de ordenamiento(1 ascendente/0 descendente):  \n",
+                                          "ERROR: Solo 1 o 0 estan perimitidos como orden.\n",
+                                          0, 1, 3);
+                if (returnNum != -1) {
+                    toUpperLastNameAndName(employee, SIZE);
+                    sortByLastname(employee, SIZE, order);
+                    printStructArray(employee, SIZE);
+                }
 
             }
 
@@ -94,20 +97,6 @@ getString(lastname,"|               Ingrese el apellido:                      |\
         }
     } while (menu != EXIT);
     return 0;
-//    eEmployee Per[CANT];
-//    initEmployees(Per, CANT);
-//    alta(Per, CANT);
-//    //alta(Per, CANT);
-//    //alta(Per, CANT);
-//    printf("\nEl primer legajo es:\n   Nombre:%s\n   Legajo:%d\n   Salario:%f",Per[0].nombre,Per[0].legajo,Per[0].salario);
-//    printf("EL TAMA�O DEL ARRAY ES : %d", sizeof(Per)/sizeof(Per[0]));
-//    alta(Per, CANT);
-//    //alta(Per, CANT);
-//    //alta(Per, CANT);
-//    printf("-----------------------------------------------------------------------------------------------------------");
-//    printf("\nEl primer legajo es:\n   Nombre:%s\n   Legajo:%d\n   Salario:%f",Per[0].nombre,Per[0].legajo,Per[0].salario);
-//    printf("EL TAMA�O DEL ARRAY ES : %d", sizeof(Per)/sizeof(Per[0]));
-//    getchar();
 
 }
 

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "functionsForProjects.h"
 
 static int getI(int *pBuffer) {
@@ -21,6 +22,21 @@ static float getF(float *pBuffer) {
 
     return scanf("%f", pBuffer);
 
+}
+
+void toUpperLastNameAndName(eEmployee employee[], int cant) {
+    int i;
+    int j;
+    for (i = 0; i < cant; i++) {
+        for (j = 0; j < strlen(employee[i].lastName); ++j) {
+            employee[i].lastName[j] = toupper(employee[i].lastName[j]);
+        }
+    }
+    for (i = 0; i < cant; i++) {
+        for (j = 0; j < strlen(employee[i].name); ++j) {
+            employee[i].name[j] = toupper(employee[i].name[j]);
+        }
+    }
 }
 
 void swap(int *xp, int *yp) {
@@ -75,7 +91,7 @@ int getEntero(int *pInt, char msg[], char msgError[], int min, int max, int rein
 
 }
 
-int getFloat(float *pFloat, char msg[], char msgError[], int min, int max, int reintentos) {
+int getFloat(float *pFloat, char msg[], char msgError[], float min, float max, int reintentos) {
     int returnNum = -1;
     float bufferFloat = 0;
     if (pFloat != NULL && msg != NULL && msgError != NULL && min <= max && reintentos >= 0) {
@@ -132,10 +148,9 @@ int getChar(char *pChar, char msg[], char msgError[], char minChar, char maxChar
 }
 
 int isLetter(char c[]) {
-    int i=0;
-    while(c[i] != '\0')
-    {
-        if((c[i] != ' ') && (c[i] < 'a' || c[i] > 'z') && (c[i] < 'A' || c[i] > 'Z'))
+    int i = 0;
+    while (c[i] != '\0') {
+        if ((c[i] != ' ') && (c[i] < 'a' || c[i] > 'z') && (c[i] < 'A' || c[i] > 'Z'))
             return 0;
         i++;
     }
@@ -150,7 +165,7 @@ int isLetter(char c[]) {
 void getString(char input[], char msg[]) {
     fflush(stdin);
     printf("%s", msg);
-    fgets (input, 200, stdin);
+    fgets(input, 200, stdin);
     input[strcspn(input, "\n")] = 0;
 }
 
@@ -160,13 +175,15 @@ void getString(char input[], char msg[]) {
  * \param input Array donde se cargará el texto ingresado
  * \return 1 si el texto contiene solo letras
  */
-int getStringLetras(char input[], char mensaje[], int cant) {
-    char aux[256];
-    getString(aux, mensaje);
-    if (isLetter(aux)) {
-        strcpy(input, aux);
-        return 1;
-    }
+int getStringLettersOnly(char *input, char *mensaje, int cant, int intentos) {
+    char aux[cant];
+    do {
+        getString(aux, mensaje);
+        if (isLetter(aux)) {
+            strcpy(input, aux);
+            return 1;
+        }
+    } while (intentos >= 0);
     return 0;
 }
 //    if(pChar != NULL && msg != NULL && msgError != NULL && minChar<=maxChar && reintentos>=0) {
@@ -227,8 +244,9 @@ int initEmployees(eEmployee *Per, int cant) {
 
 int addEmployee(eEmployee *list, int len, int id, char name[], char lastName[], float salary, int sector) {
     int i;
-    i=getFreeSpace(list, len);
+    i = getFreeSpace(list, len);
     if (i != -1) {
+        list[i].isEmpty = 0;
         list[i].id = id;
         strcpy(list[i].name, name);
         strcpy(list[i].lastName, lastName);
@@ -238,7 +256,6 @@ int addEmployee(eEmployee *list, int len, int id, char name[], char lastName[], 
     }
     return -1;
 }
-
 
 
 int isOneDigitNumber(int n) {
@@ -262,4 +279,69 @@ int isInit(int flag) {
         printf("No se puede realizar esta operacion sin inicializar la carga de empleados.\n");
         return 0;
     }
+}
+
+void printStructArray(eEmployee per[], int cant) {
+    int i;
+    system("cls");
+    for (i = 0; i < cant; i++) {
+        if (per[i].isEmpty == 0) {
+            printf("------------------------------------------------------------\n");
+            printf("| ID        |    %d\n", per[i].id);
+            printf("| Nombre    |    %s\n", per[i].name);
+            printf("| Apellido  |    %s\n", per[i].lastName);
+            printf("| Salario   |    %f\n", per[i].salary);
+            printf("| Sector    |    %d\n", per[i].sector);
+            printf("------------------------------------------------------------\n");
+        }
+    }
+
+}
+
+void sortByLastname(eEmployee employee[], int cant, int order) {
+    int i;
+    int j;
+    eEmployee auxEmployee;
+
+    if (order == 1) {
+        for (i = 0; i < cant - 1; i++) {
+            for (j = i; j < cant; ++j) {
+                if (strcmp(employee[i].lastName, employee[j].lastName) > 0) {
+                    auxEmployee = employee[i];
+                    employee[i] = employee[j];
+                    employee[j] = auxEmployee;
+                } else if (strcmp(employee[i].lastName, employee[j].lastName) == 0) {
+                    if (strcmp(employee[i].name, employee[j].name) > 0) {
+                        auxEmployee = employee[i];
+                        employee[i] = employee[j];
+                        employee[j] = auxEmployee;
+                    }
+
+                }
+
+            }
+
+        }
+    }
+    if(order == 0){
+        for (i = 0; i < cant - 1; i++) {
+            for (j = i; j < cant; ++j) {
+                if (strcmp(employee[i].lastName, employee[j].lastName) < 0) {
+                    auxEmployee = employee[i];
+                    employee[i] = employee[j];
+                    employee[j] = auxEmployee;
+                } else if (strcmp(employee[i].lastName, employee[j].lastName) == 0) {
+                    if (strcmp(employee[i].name, employee[j].name) < 0) {
+                        auxEmployee = employee[i];
+                        employee[i] = employee[j];
+                        employee[j] = auxEmployee;
+                    }
+
+                }
+
+            }
+
+        }
+    }
+
 }

@@ -13,6 +13,8 @@ stdlib.h
 -
 string.h
 -
+ctype.h
+-
 functionsForProjects.h
 C:/Users/yasir/Desktop/Proyectos UTN/utn-tp2/functionsForProjects.h
 
@@ -25,4 +27,12 @@ stdlib.h
 -
 functionsForProjects.h
 C:/Users/yasir/Desktop/Proyectos UTN/utn-tp2/functionsForProjects.h
+string.h
+-
+stdio.h
+-
+stdlib.h
+-
+math.h
+-
 
