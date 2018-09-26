@@ -25,11 +25,12 @@ int getFreeSpace(eEmployee[],int);
 int initEmployees(eEmployee *, int);
 int alta(eEmployee[], int);
 int isRepeated(eEmployee[], int,int);
-int isValidMenu(int n);
+int isValidMenu(int n,int min, int max);
 int isInit(int flag);
 int addEmployee(eEmployee[], int len, int id, char name[],char lastName[],float salary,int sector);
-void printStructArray(eEmployee *, int);
-void sortByLastname(eEmployee employee[],int size, int order);
-
+void printEmployees(eEmployee *, int);
+void sortByLastnameAndName(eEmployee *employee, int size, int order);
+int findEmployeeById(eEmployee employee[],int elements, int id);
+int removeEmployee(eEmployee* list, int id);
 
 void toUpperLastNameAndName(eEmployee employee[], int cant);

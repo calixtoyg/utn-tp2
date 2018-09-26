@@ -12,6 +12,7 @@ static int getI(int *pBuffer) {
 }
 
 static char getC(char *pBuffer) {
+    fflush(stdin);
 
     return scanf("%c", pBuffer);
 
@@ -149,8 +150,10 @@ int getChar(char *pChar, char msg[], char msgError[], char minChar, char maxChar
 
 int isLetter(char c[]) {
     int i = 0;
+    if (c[i] == ' ' || c[i] == '\r')
+        return 0;
     while (c[i] != '\0') {
-        if ((c[i] != ' ') && (c[i] < 'a' || c[i] > 'z') && (c[i] < 'A' || c[i] > 'Z'))
+        if ((c[i] != ' ') && (c[i] < 'a' || c[i] > 'z') && (c[i] < 'A' || c[i] > 'Z') && (c[i] == '\r'))
             return 0;
         i++;
     }
@@ -182,30 +185,15 @@ int getStringLettersOnly(char *input, char *mensaje, int cant, int intentos) {
         if (isLetter(aux)) {
             strcpy(input, aux);
             return 1;
+        } else {
+            intentos--;
+            printf("Error nombre deben ser solo letras y no puede estar vacio!.\n");
         }
+
     } while (intentos >= 0);
     return 0;
 }
-//    if(pChar != NULL && msg != NULL && msgError != NULL && minChar<=maxChar && reintentos>=0) {
-//        do{
-//            reintentos--;
-//            printf("%s", msg);
-//            fflush(stdin);
-//            if(getC(&bufferChar)&& bufferChar>=minChar && bufferChar<=maxChar){
-//
-//                *pChar = bufferChar;
-//                returnNum = 0;
-//                break;
-//
-//            }else{
-//                printf("%s", msgError);
-//
-//            }
-//
-//
-//        }while(reintentos>0);
 
-//    }
 int getFreeSpace(eEmployee Per[], int cant) {
 
     int i;
@@ -214,6 +202,7 @@ int getFreeSpace(eEmployee Per[], int cant) {
             return i;
         }
     }
+    printf("No hay espacio en el array para agregar mas empleados.\n");
     return -1;
 
 }
@@ -257,6 +246,17 @@ int addEmployee(eEmployee *list, int len, int id, char name[], char lastName[], 
     return -1;
 }
 
+int findEmployeeById(eEmployee employee[], int elements, int id) {
+    int i;
+    for (i = 0; i < elements; i++) {
+        if (id == employee[i].id) {
+            return i;
+
+        }
+    }
+    printf("No hay empleados con el ID:%d en el array.\n", id);
+    return -1;
+}
 
 int isOneDigitNumber(int n) {
     if (n > 0 && n < 9) {
@@ -265,11 +265,11 @@ int isOneDigitNumber(int n) {
         return 0;
 }
 
-int isValidMenu(int n) {
-    if (!(n > 0 && n <= 5)) {
-        return 0;
-    } else
+int isValidMenu(int n,int min, int max) {
+    if (n>=min&&n<=max) {
         return 1;
+    } else
+        return 0;
 }
 
 int isInit(int flag) {
@@ -281,7 +281,7 @@ int isInit(int flag) {
     }
 }
 
-void printStructArray(eEmployee per[], int cant) {
+void printEmployees(eEmployee per[], int cant) {
     int i;
     system("cls");
     for (i = 0; i < cant; i++) {
@@ -295,10 +295,12 @@ void printStructArray(eEmployee per[], int cant) {
             printf("------------------------------------------------------------\n");
         }
     }
+    printf("Presiona cualquier tecla para continuar.");
+    getchar();
 
 }
 
-void sortByLastname(eEmployee employee[], int cant, int order) {
+void sortByLastnameAndName(eEmployee *employee, int cant, int order) {
     int i;
     int j;
     eEmployee auxEmployee;
@@ -323,7 +325,7 @@ void sortByLastname(eEmployee employee[], int cant, int order) {
 
         }
     }
-    if(order == 0){
+    if (order == 0) {
         for (i = 0; i < cant - 1; i++) {
             for (j = i; j < cant; ++j) {
                 if (strcmp(employee[i].lastName, employee[j].lastName) < 0) {
@@ -342,6 +344,24 @@ void sortByLastname(eEmployee employee[], int cant, int order) {
             }
 
         }
+    }
+
+}
+
+int removeEmployee(eEmployee *list, int id) {
+    char tempChar;
+    printf("Esta seguro que desea eliminar el registro (Y/N): \n");
+    getC(&tempChar);
+    tempChar = toupper(tempChar);
+    if (tempChar == 'Y') {
+        list[id-1].isEmpty = 1;
+        system("cls");
+        printf("Registro eliminado con exito.");
+        return 0;
+    } else {
+        system("cls");
+        printf("Operacion cancelada");
+        return -1;
     }
 
 }
