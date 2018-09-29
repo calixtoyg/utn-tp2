@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SIZE 5
+#define SIZE 50
 #define EXIT 5
 #define CHARSIZE 50
 
@@ -53,11 +53,11 @@ int main() {
                     getStringLettersOnly(lastname, "Ingrese el apellido:\n", CHARSIZE, 3);
 
                     printf("------------------------------------------------------------\n");
-                    getEntero(&sector, "Ingrese el sector:\n", "ERROR: Solo numeros entre 0 y 300\n",
-                              0, 300, 3);
+                    getEntero(&sector, "Ingrese el sector:\n", "ERROR: Solo numeros entre 1 y 300\n",
+                              1, 300, 3);
                     printf("------------------------------------------------------------\n");
                     getFloat(&salary, "Ingrese el salario:\n", "ERROR: Un salario no puede ser negativo.\n",
-                             0, pow(2, 1024), 3);
+                             1, pow(2, 1024), 3);
                     addEmployee(employee, SIZE, id, name, lastname, salary, sector);
                 }
                 break;
@@ -77,10 +77,10 @@ int main() {
 
                         printf("------------------------------------------------------------\n");
                         getEntero(&sector, "Ingrese el sector:\n", "ERROR: Solo numeros entre 0 y 300\n",
-                                  0, 300, 3);
+                                  1, 300, 3);
                         printf("------------------------------------------------------------\n");
                         getFloat(&salary, "Ingrese el salario:\n", "ERROR: Un salario no puede ser negativo.\n",
-                                 0, pow(2, 1024), 3);
+                                 1, pow(2, 1024), 3);
                         addEmployee(employee, SIZE, index, name, lastname, salary, sector);
                     }
                 }
@@ -90,7 +90,7 @@ int main() {
                     int idToFind = getEntero(&idToFind, "Ingrese el ID del empleado que desea eliminar\n",
                                              "ERROR: Solo numeros dentro de la cantidad maxima del array estan perimitidos\n",
                                              0, SIZE, 3);
-                    removeEmployee(employee, id);
+                    removeEmployee(employee, SIZE,id);
 
 
                 }
@@ -122,18 +122,23 @@ int main() {
                                                       0, 1, 3);
                             if (returnNum != -1) {
                                 toUpperLastNameAndName(employee, SIZE);
-                                sortByLastnameAndName(employee, SIZE, order);
+                                sortBySectorLastnameAndName(employee, SIZE, order);
                                 printEmployees(employee, SIZE);
                             }
                             break;
-                        case 2:
+                        case 2:;
+                            int totalSalariesOfAllEmployees  = totalSalaries(employee,SIZE);
+                            int averageOfSalariesOfAllEmployess = averageSalaries(employee,SIZE);
+                            int employeesAboveAverageSalary = employeesAboveAverage(employee,SIZE);
+                            printf("----------------------------------------------------------------------------------\n");
+                            printf("| Promedio de salarios de todos los empleados: %d                                |\n",averageOfSalariesOfAllEmployess);
+                            printf("| Empleados que superna la media salarial: %d                                    |\n",employeesAboveAverageSalary);
+                            printf("----------------------------------------------------------------------------------\n");
                             break;
                     }
 
 
                 }
-                break;
-            default:
                 break;
         }
 

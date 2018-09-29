@@ -29,8 +29,10 @@ int isValidMenu(int n,int min, int max);
 int isInit(int flag);
 int addEmployee(eEmployee[], int len, int id, char name[],char lastName[],float salary,int sector);
 void printEmployees(eEmployee *, int);
-void sortByLastnameAndName(eEmployee *employee, int size, int order);
+void sortBySectorLastnameAndName(eEmployee *employee, int size, int order);
 int findEmployeeById(eEmployee employee[],int elements, int id);
-int removeEmployee(eEmployee* list, int id);
-
+int removeEmployee(eEmployee* list, int range,int id);
+int totalSalaries(eEmployee* list, int range);
+int averageSalaries(eEmployee* list, int range);
+int employeesAboveAverage(eEmployee* list,int range);
 void toUpperLastNameAndName(eEmployee employee[], int cant);

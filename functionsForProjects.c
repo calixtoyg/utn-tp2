@@ -265,8 +265,8 @@ int isOneDigitNumber(int n) {
         return 0;
 }
 
-int isValidMenu(int n,int min, int max) {
-    if (n>=min&&n<=max) {
+int isValidMenu(int n, int min, int max) {
+    if (n >= min && n <= max) {
         return 1;
     } else
         return 0;
@@ -295,12 +295,11 @@ void printEmployees(eEmployee per[], int cant) {
             printf("------------------------------------------------------------\n");
         }
     }
-    printf("Presiona cualquier tecla para continuar.");
-    getchar();
+
 
 }
 
-void sortByLastnameAndName(eEmployee *employee, int cant, int order) {
+void sortBySectorLastnameAndName(eEmployee *employee, int cant, int order) {
     int i;
     int j;
     eEmployee auxEmployee;
@@ -308,11 +307,22 @@ void sortByLastnameAndName(eEmployee *employee, int cant, int order) {
     if (order == 1) {
         for (i = 0; i < cant - 1; i++) {
             for (j = i; j < cant; ++j) {
-                if (strcmp(employee[i].lastName, employee[j].lastName) > 0) {
+                if (employee[i].sector > employee[j].sector) {
                     auxEmployee = employee[i];
                     employee[i] = employee[j];
                     employee[j] = auxEmployee;
-                } else if (strcmp(employee[i].lastName, employee[j].lastName) == 0) {
+                }
+
+            }
+
+        }
+        for (i = 0; i < cant - 1; i++) {
+            for (j = i; j < cant; ++j) {
+                if (strcmp(employee[i].lastName, employee[j].lastName) > 0 && i == j) {
+                    auxEmployee = employee[i];
+                    employee[i] = employee[j];
+                    employee[j] = auxEmployee;
+                } else if (strcmp(employee[i].lastName, employee[j].lastName) == 0 && i == j) {
                     if (strcmp(employee[i].name, employee[j].name) > 0) {
                         auxEmployee = employee[i];
                         employee[i] = employee[j];
@@ -328,11 +338,22 @@ void sortByLastnameAndName(eEmployee *employee, int cant, int order) {
     if (order == 0) {
         for (i = 0; i < cant - 1; i++) {
             for (j = i; j < cant; ++j) {
-                if (strcmp(employee[i].lastName, employee[j].lastName) < 0) {
+                if (employee[i].sector < employee[j].sector) {
                     auxEmployee = employee[i];
                     employee[i] = employee[j];
                     employee[j] = auxEmployee;
-                } else if (strcmp(employee[i].lastName, employee[j].lastName) == 0) {
+                }
+
+            }
+
+        }
+        for (i = 0; i < cant - 1; i++) {
+            for (j = i; j < cant; ++j) {
+                if (strcmp(employee[i].lastName, employee[j].lastName) < 0 && i == j) {
+                    auxEmployee = employee[i];
+                    employee[i] = employee[j];
+                    employee[j] = auxEmployee;
+                } else if (strcmp(employee[i].lastName, employee[j].lastName) == 0 && i == j) {
                     if (strcmp(employee[i].name, employee[j].name) < 0) {
                         auxEmployee = employee[i];
                         employee[i] = employee[j];
@@ -346,22 +367,69 @@ void sortByLastnameAndName(eEmployee *employee, int cant, int order) {
         }
     }
 
+
 }
 
-int removeEmployee(eEmployee *list, int id) {
+int removeEmployee(eEmployee *list, int range, int id) {
     char tempChar;
+    int i, returnNum = -1;
     printf("Esta seguro que desea eliminar el registro (Y/N): \n");
     getC(&tempChar);
     tempChar = toupper(tempChar);
     if (tempChar == 'Y') {
-        list[id-1].isEmpty = 1;
-        system("cls");
-        printf("Registro eliminado con exito.");
-        return 0;
+        for (i = 0; i < range; i++) {
+            if (id == list[i].id) {
+                list[i].isEmpty = 1;
+                returnNum = 1;
+                return returnNum;
+            }
+            returnNum = -1;
+        }
+        if (returnNum != 0) {
+            printf("Registro no encontrado");
+            returnNum = 0;
+            return returnNum;
+        }
     } else {
         system("cls");
-        printf("Operacion cancelada");
-        return -1;
+        printf("Operacion cancelada-\n");
+        return returnNum;
     }
+
+}
+
+int totalSalaries(eEmployee *list, int range) {
+    int i, totalSalaries = 0;
+    for (i = 0; i < range; i++) {
+        if (list->isEmpty == 0)
+            totalSalaries += list[i].salary;
+    }
+    return totalSalaries;
+
+
+}
+
+int averageSalaries(eEmployee *list, int range) {
+    int i, averageSalaries = 0, rangeOfNotEmptyEmployees = 0;
+    for (i = 0; i < range; i++) {
+        if (list[i].isEmpty == 0) {
+            averageSalaries += list[i].salary;
+            rangeOfNotEmptyEmployees++;
+        }
+    }
+    return averageSalaries / rangeOfNotEmptyEmployees;
+}
+
+int employeesAboveAverage(eEmployee *list, int range) {
+    int getAverageSalary = averageSalaries(list, range);
+    int i, employessAboveAverage = 0;
+    for (i = 0; i < range; i++) {
+        if (list[i].isEmpty == 0 && list[i].salary > getAverageSalary) {
+            employessAboveAverage++;
+
+        }
+    }
+    return employessAboveAverage;
+
 
 }
