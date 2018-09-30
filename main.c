@@ -12,9 +12,7 @@
 #include <math.h>
 
 int main() {
-    int flag = 0, id = 0, sector, menu, order, idToFind, index, returnNum, totalSalariesOfAllEmployees,
-            averageOfSalariesOfAllEmployess,
-            employeesAboveAverageSalary,
+    int id = 0, sector, menu, order, idToFind, index, returnNum,
             quantityOfEmployees = 0,
             isEmployeeSuccesful;
     float salary;
@@ -43,24 +41,24 @@ int main() {
         switch (menu) {
             case 1:
                 if (quantityOfEmployees == 0)
-                    initEmployees(employee,SIZE);
+                    initEmployees(employee, SIZE);
                 if (getFreeSpace(employee, SIZE) != -1)
                     id++;
-                    printf("------------------------------------------------------------\n");
-                    getStringLettersOnly(name, "Ingrese el nombre:\n", CHARSIZE, 3);
-                    printf("------------------------------------------------------------\n");
-                    getStringLettersOnly(lastname, "Ingrese el apellido:\n", CHARSIZE, 3);
+                printf("------------------------------------------------------------\n");
+                getStringLettersOnly(name, "Ingrese el nombre:\n", CHARSIZE, 3);
+                printf("------------------------------------------------------------\n");
+                getStringLettersOnly(lastname, "Ingrese el apellido:\n", CHARSIZE, 3);
 
-                    printf("------------------------------------------------------------\n");
-                    getEntero(&sector, "Ingrese el sector:\n", "ERROR: Solo numeros entre 1 y 300\n",
-                              1, 300, 3);
-                    printf("------------------------------------------------------------\n");
-                    getFloat(&salary, "Ingrese el salario:\n", "ERROR: Un salario no puede ser negativo.\n",
-                             1, pow(2, 1024), 3);
-                    isEmployeeSuccesful = addEmployee(employee, SIZE, id, name, lastname, salary, sector);
-                    if (isEmployeeSuccesful == 0) {
-                        quantityOfEmployees++;
-                    }
+                printf("------------------------------------------------------------\n");
+                getEntero(&sector, "Ingrese el sector:\n", "ERROR: Solo numeros entre 1 y 300\n",
+                          1, 300, 3);
+                printf("------------------------------------------------------------\n");
+                getFloat(&salary, "Ingrese el salario:\n", "ERROR: Un salario no puede ser negativo.\n",
+                         1, pow(2, 1024), 3);
+                isEmployeeSuccesful = addEmployee(employee, SIZE, id, name, lastname, salary, sector);
+                if (isEmployeeSuccesful == 0) {
+                    quantityOfEmployees++;
+                }
                 break;
             case 2:
                 if (quantityOfEmployees > 0) {
@@ -91,7 +89,7 @@ int main() {
                                          "ERROR: Solo numeros dentro de la cantidad maxima del array estan perimitidos\n",
                                          0, SIZE, 3);
                     isEmployeeSuccesful = removeEmployee(employee, SIZE, id);
-                    if (isEmployeeSuccesful == 0){
+                    if (isEmployeeSuccesful == 0) {
                         quantityOfEmployees--;
                         id--;
                     }
@@ -126,20 +124,16 @@ int main() {
                                                   0, 1, 3);
                             if (returnNum != -1) {
                                 toUpperLastNameAndName(employee, SIZE);
-                                sortBySectorLastnameAndName(employee, SIZE, order);
+                                sortBySectorLastNameAndName(employee, SIZE, order);
                                 printEmployees(employee, SIZE);
                             }
                             break;
                         case 2:;
-                            averageOfSalariesOfAllEmployess = averageSalaries(employee, SIZE);
-                            employeesAboveAverageSalary = employeesAboveAverage(employee, SIZE);
                             printf("----------------------------------------------------------------------------------\n");
-                            printf("| Numero total de empleados: %d\n",
-                                                                quantityOfEmployees);
-                            printf("| Promedio de salarios de todos los empleados: %d\n",
-                                   averageOfSalariesOfAllEmployess);
-                            printf("| Empleados que superna la media salarial: %d\n",
-                                   employeesAboveAverageSalary);
+                            printf("| Total de empleados: %d\n", quantityOfEmployees);
+                            printf("| Total de salarios: %.2lf\n", getAllSalaries(employee, SIZE));
+                            printf("| Promedio de salarios de todos los empleados: %d\n", getAverageSalaries(employee, SIZE));
+                            printf("| Empleados que superna la media salarial: %d\n", employeesAboveAverage(employee, SIZE));
                             printf("----------------------------------------------------------------------------------\n");
                             break;
                     }
