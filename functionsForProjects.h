@@ -9,9 +9,6 @@ typedef struct {
 
 }eEmployee;
 void swap(int *, int *);
-int isOneDigitNumber(int n);
-void bubbleSort(int [], int );
-void printArray(int [], int );
 int getEntero(int *,char [], char [], int ,int, int);
 int getFloat(float *pFloat, char msg[], char msgError[], float min, float max, int reintentos);
 static int getI(int* );
@@ -23,16 +20,13 @@ void getString(char input[], char msg[]);
 int getStringLettersOnly(char *input, char *mensaje, int cant, int tries);
 int getFreeSpace(eEmployee[],int);
 int initEmployees(eEmployee *, int);
-int alta(eEmployee[], int);
-int isRepeated(eEmployee[], int,int);
 int isValidMenu(int n,int min, int max);
-int isInit(int flag);
 int addEmployee(eEmployee[], int len, int id, char name[],char lastName[],float salary,int sector);
 void printEmployees(eEmployee *, int);
 void sortBySectorLastnameAndName(eEmployee *employee, int size, int order);
 int findEmployeeById(eEmployee employee[],int elements, int id);
 int removeEmployee(eEmployee* list, int range,int id);
-int totalSalaries(eEmployee* list, int range);
 int averageSalaries(eEmployee* list, int range);
 int employeesAboveAverage(eEmployee* list,int range);
 void toUpperLastNameAndName(eEmployee employee[], int cant);
+int modifyEmployee(eEmployee[],int range, int id, char name[],char lastName[],float salary,int sector);

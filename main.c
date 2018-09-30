@@ -12,7 +12,11 @@
 #include <math.h>
 
 int main() {
-    int flag = 0, id = 0, sector, menu, order;
+    int flag = 0, id = 0, sector, menu, order, idToFind, index, returnNum, totalSalariesOfAllEmployees,
+            averageOfSalariesOfAllEmployess,
+            employeesAboveAverageSalary,
+            quantityOfEmployees = 0,
+            isEmployeeSuccesful;
     float salary;
     char name[CHARSIZE];
     char lastname[CHARSIZE];
@@ -38,14 +42,9 @@ int main() {
         }
         switch (menu) {
             case 1:
-                if (flag == 0) {
-                    if (initEmployees(employee, SIZE) != -1) {
-                        printf("No hay espacio libre.\n");
-                    } else {
-                        flag = 1;
-                    }
-                }
-                if (getFreeSpace(employee, SIZE) != -1) {
+                if (quantityOfEmployees == 0)
+                    initEmployees(employee,SIZE);
+                if (getFreeSpace(employee, SIZE) != -1)
                     id++;
                     printf("------------------------------------------------------------\n");
                     getStringLettersOnly(name, "Ingrese el nombre:\n", CHARSIZE, 3);
@@ -58,18 +57,19 @@ int main() {
                     printf("------------------------------------------------------------\n");
                     getFloat(&salary, "Ingrese el salario:\n", "ERROR: Un salario no puede ser negativo.\n",
                              1, pow(2, 1024), 3);
-                    addEmployee(employee, SIZE, id, name, lastname, salary, sector);
-                }
+                    isEmployeeSuccesful = addEmployee(employee, SIZE, id, name, lastname, salary, sector);
+                    if (isEmployeeSuccesful == 0) {
+                        quantityOfEmployees++;
+                    }
                 break;
             case 2:
-                if (isInit(flag)) {
-                    int idToFind = getEntero(&idToFind, "Ingrese el ID del empleado que desea modificar\n",
-                                             "ERROR: Solo numeros dentro de la cantidad maxima del array estan perimitidos\n",
-                                             0, SIZE, 3);
-                    int index = findEmployeeById(employee, SIZE, idToFind);
-                    if (index != -1) {
-                        if (getFreeSpace(employee, SIZE) != -1)
-                            id++;
+                if (quantityOfEmployees > 0) {
+                    getEntero(&idToFind, "Ingrese el ID del empleado que desea modificar\n",
+                              "ERROR: Solo numeros dentro de la cantidad maxima del array estan perimitidos\n",
+                              0, SIZE, 3);
+                    index = findEmployeeById(employee, SIZE, idToFind);
+
+                    if (index != -1 && idToFind != -1) {
                         printf("------------------------------------------------------------\n");
                         getStringLettersOnly(name, "Ingrese el nombre:\n", CHARSIZE, 3);
                         printf("------------------------------------------------------------\n");
@@ -81,22 +81,26 @@ int main() {
                         printf("------------------------------------------------------------\n");
                         getFloat(&salary, "Ingrese el salario:\n", "ERROR: Un salario no puede ser negativo.\n",
                                  1, pow(2, 1024), 3);
-                        addEmployee(employee, SIZE, index, name, lastname, salary, sector);
+                        modifyEmployee(employee, SIZE, idToFind, name, lastname, salary, sector);
                     }
                 }
                 break;
             case 3:
-                if (isInit(flag)) {
-                    int idToFind = getEntero(&idToFind, "Ingrese el ID del empleado que desea eliminar\n",
-                                             "ERROR: Solo numeros dentro de la cantidad maxima del array estan perimitidos\n",
-                                             0, SIZE, 3);
-                    removeEmployee(employee, SIZE,id);
+                if (quantityOfEmployees > 0) {
+                    idToFind = getEntero(&idToFind, "Ingrese el ID del empleado que desea eliminar\n",
+                                         "ERROR: Solo numeros dentro de la cantidad maxima del array estan perimitidos\n",
+                                         0, SIZE, 3);
+                    isEmployeeSuccesful = removeEmployee(employee, SIZE, id);
+                    if (isEmployeeSuccesful == 0){
+                        quantityOfEmployees--;
+                        id--;
+                    }
 
 
                 }
                 break;
             case 4:
-                if (isInit(flag)) {
+                if (quantityOfEmployees > 0) {
                     do {
                         system("cls");
                         fflush(stdin);
@@ -113,13 +117,13 @@ int main() {
 
 
                     } while (menu != 1 && menu != 2);
-                    switch (menu){
+                    switch (menu) {
                         case 1:
                             fflush(stdin);
-                            int returnNum = getEntero(&order,
-                                                      "Ingrese el orden de ordenamiento 1 para ascendente y 0 para descendente:  \n",
-                                                      "ERROR: Solo numeros entre 0 y 1(inclusive) estan perimitidos.\n",
-                                                      0, 1, 3);
+                            returnNum = getEntero(&order,
+                                                  "Ingrese el orden de ordenamiento 1 para ascendente y 0 para descendente:  \n",
+                                                  "ERROR: Solo numeros entre 0 y 1(inclusive) estan perimitidos.\n",
+                                                  0, 1, 3);
                             if (returnNum != -1) {
                                 toUpperLastNameAndName(employee, SIZE);
                                 sortBySectorLastnameAndName(employee, SIZE, order);
@@ -127,12 +131,15 @@ int main() {
                             }
                             break;
                         case 2:;
-                            int totalSalariesOfAllEmployees  = totalSalaries(employee,SIZE);
-                            int averageOfSalariesOfAllEmployess = averageSalaries(employee,SIZE);
-                            int employeesAboveAverageSalary = employeesAboveAverage(employee,SIZE);
+                            averageOfSalariesOfAllEmployess = averageSalaries(employee, SIZE);
+                            employeesAboveAverageSalary = employeesAboveAverage(employee, SIZE);
                             printf("----------------------------------------------------------------------------------\n");
-                            printf("| Promedio de salarios de todos los empleados: %d                                |\n",averageOfSalariesOfAllEmployess);
-                            printf("| Empleados que superna la media salarial: %d                                    |\n",employeesAboveAverageSalary);
+                            printf("| Numero total de empleados: %d\n",
+                                                                quantityOfEmployees);
+                            printf("| Promedio de salarios de todos los empleados: %d\n",
+                                   averageOfSalariesOfAllEmployess);
+                            printf("| Empleados que superna la media salarial: %d\n",
+                                   employeesAboveAverageSalary);
                             printf("----------------------------------------------------------------------------------\n");
                             break;
                     }
