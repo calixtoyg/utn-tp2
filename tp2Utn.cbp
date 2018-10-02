@@ -31,10 +31,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="functions-in-C/functionsBiblo/functionsForProjects.c">
+		<Unit filename="functionsForProjects.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="functions-in-C/functionsBiblo/functionsForProjects.h" />
+		<Unit filename="functionsForProjects.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
